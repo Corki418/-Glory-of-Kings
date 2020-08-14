@@ -30,13 +30,11 @@ jobs:
         env:
           # 私钥
           SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }} # scp参数
-          ARGS: "-avzr --delete"
           # 源目录
           SOURCE: "dist"
           # 服务器ip:换成你的服务器IP
           REMOTE_HOST: "139.196.35.27"
           # 用户
-          REMOTE_USER:
-            "root"
+          REMOTE_USER: "root"
             # 目标地址
           TARGET: "/root/glory-of-kings/client"
