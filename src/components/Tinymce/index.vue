@@ -20,16 +20,11 @@
 </template>
 
 <script lang="ts">
-// Docs: https://www.tiny.cloud/docs/advanced/usage-with-module-loaders/
-// Import TinyMCE
+// Docs: https://armour.github.io/vue-typescript-admin-docs/features/components/rich-editor.html#tinymce
 import 'tinymce/tinymce'
-// Default icons are required for TinyMCE 5.3 or above
-import 'tinymce/icons/default'
-// Import themes
-import 'tinymce/themes/silver'
+import 'tinymce/themes/silver' // Import themes
 import 'tinymce/themes/mobile'
-// Any plugins you want to use has to be imported
-import 'tinymce/plugins/advlist'
+import 'tinymce/plugins/advlist' // Any plugins you want to use has to be imported
 import 'tinymce/plugins/anchor'
 import 'tinymce/plugins/autolink'
 import 'tinymce/plugins/autosave'
@@ -91,11 +86,10 @@ export default class extends Vue {
   // https://www.tiny.cloud/docs/configure/localization/#language
   // and also see langs files under public/tinymce/langs folder
   private languageTypeList: { [key: string]: string } = {
-    en: 'en',
-    zh: 'zh_CN',
-    es: 'es',
-    ja: 'ja',
-    ko: 'ko_KR'
+    'en': 'en',
+    'zh': 'zh_CN',
+    'es': 'es',
+    'ja': 'ja'
   }
 
   get language() {
@@ -145,11 +139,7 @@ export default class extends Vue {
       imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
       default_link_target: '_blank',
       link_title: false,
-      // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
-      nonbreaking_force_tab: true,
-      // https://www.tiny.cloud/docs-3x/reference/configuration/Configuration3x@convert_urls/
-      // https://stackoverflow.com/questions/5196205/disable-tinymce-absolute-to-relative-url-conversions
-      convert_urls: false,
+      nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
       init_instance_callback: (editor: any) => {
         if (this.value) {
           editor.setContent(this.value)

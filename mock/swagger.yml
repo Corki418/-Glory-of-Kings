@@ -12,7 +12,7 @@ servers:
   - url: /mock-api/v1
 tags:
   - name: players
-    description: players messageInfo
+    description: 玩家相关接口
   - name: articles
     description: Articles data related api.
   - name: roles
@@ -22,29 +22,43 @@ tags:
   - name: users
     description: Users related api.
 paths:
+  /banpick:
+    get:
+      description: 查询英雄办选统计数据列表
+      operationId: getBanPickData
+      responses:
+        "200":
+          description: OK
+  /banpick/{id}:
+    get:
+      description: 查询id对应英雄办选详情
+      operationId: getBanPickDetail
+      responses:
+        "200":
+          description: OK
   /players:
     get: #method类型
       tags: #所属标签
         - players
-      summary: 获取玩家信息列表 # 概要
-      description: 返回玩家信息数组 # 详细信息
       operationId: getPlayers # 操作id，必要，映射到实现函数
+      summary: 获取玩家信息列表 # 概要
+      description: 返回玩家信息数组 # 详细描述
       # 描述参数信息
       parameters:
-        - name: name
-          in: query #参数位于那里
+        - name: accountname
+          in: query # 参数位于哪里
           description: 用于过滤的账户名称
           schema:
             type: string
         - name: page
-          in: query #参数位于那里
+          in: query
           description: 指定页码
           schema:
             type: integer
             format: int32
             minimum: 1
-        - name: page
-          in: query #参数位于那里
+        - name: limit
+          in: query
           description: 每页条数
           schema:
             type: integer
@@ -72,17 +86,17 @@ paths:
                         type: array
                         items:
                           $ref: "#/components/schemas/Player"
-    post: #method类型
+    post: #在get后面增加一个post定义
       tags: #所属标签
         - players
+      operationId: createPlayer # 操作id，必要，映射到实现函数
       summary: 新增玩家信息 # 概要
-      description: 创建玩家信息 # 详细信息
-      operationId: creatPlayer # 操作id，必要，映射到实现函数
+      description: 创建玩家并返回创建玩家的数据 # 详细描述
       # 描述参数信息
       parameters:
         - name: player
-          in: query #参数位于那里
-          description: 新增用户名称
+          in: query # 参数位于哪里
+          description: 新建玩家数据
           schema:
             $ref: "#/components/schemas/Player"
       responses:
@@ -90,6 +104,27 @@ paths:
           description: OK
         401:
           $ref: "#/components/responses/Unauthorized"
+  /players/{id}: #多了一个参数
+    get:
+      tags:
+        - players
+      summary: 获取指定玩家信息
+      operationId: getPlayer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 玩家id
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: OK
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        404:
+          $ref: "#/components/responses/NotFound"
     put: # 在get后面定义put接口
       tags:
         - players
@@ -146,29 +181,6 @@ paths:
                   code:
                     type: integer
                     format: int32
-        401:
-          $ref: "#/components/responses/Unauthorized"
-        404:
-          $ref: "#/components/responses/NotFound"
-  /players/{id}:
-    get:
-      tags:
-        - players
-      summary: 获取指定玩家信息
-      operationId: getPlayer
-      security: # 定义安全选项，保护路由
-        - AccessTokenAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: 玩家id
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Ok
         401:
           $ref: "#/components/responses/Unauthorized"
         404:
@@ -899,7 +911,6 @@ components:
       required:
         - code
         - message
-
     Player:
       type: object
       properties:

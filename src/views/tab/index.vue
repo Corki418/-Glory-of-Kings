@@ -47,7 +47,6 @@ export default class extends Vue {
     { label: 'Japan', key: 'JP' },
     { label: 'Eurozone', key: 'EU' }
   ]
-
   private activeName = 'CN'
   private createdTimes = 0
 

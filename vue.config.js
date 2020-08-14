@@ -8,6 +8,7 @@ const mockServerPort = 9528 // TODO: get this variable from setting.ts
 const name = 'Vue Typescript Admin' // TODO: get this variable from setting.ts
 
 module.exports = {
+  // publicPath: process.env.NODE_ENV === 'production' ? '/vue-typescript-admin-template/' : '/',
   publicPath: '/',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
@@ -54,12 +55,19 @@ module.exports = {
     config.set('name', name)
 
     // https://webpack.js.org/configuration/devtool/#development
-    // Change development env source map if you want.
-    // The default in vue-cli is 'eval-cheap-module-source-map'.
-    // config
-    //   .when(process.env.NODE_ENV === 'development',
-    //     config => config.devtool('eval-cheap-source-map')
-    //   )
+    config
+      .when(process.env.NODE_ENV === 'development',
+        config => config.devtool('cheap-eval-source-map')
+      )
+
+    // remove vue-cli-service's progress output
+    config.plugins.delete('progress')
+    // replace with another progress output plugin to solve the this bug:
+    // https://github.com/vuejs/vue-cli/issues/4557
+    config.plugin('simple-progress-webpack-plugin')
+      .use(require.resolve('simple-progress-webpack-plugin'), [{
+        format: 'compact'
+      }])
 
     config
       .when(process.env.NODE_ENV !== 'development',

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
     "target": "esnext",
     "module": "esnext",
-    "strict": false,
+    "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
